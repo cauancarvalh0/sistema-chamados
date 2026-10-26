@@ -1,6 +1,6 @@
-# 🛠️ HelpDesk — Sistema de Controle de Chamados
+# HelpDesk — Sistema de Controle de Chamados
 
-Sistema web de **gerenciamento de chamados de suporte de TI**, desenvolvido em **PHP puro (sem frameworks)** com **PDO** e **MySQL**. Permite registrar ocorrências, acompanhar o andamento e atualizar o status de cada atendimento, simulando o fluxo real de um service desk.
+Sistema web de gerenciamento de chamados de suporte de TI, desenvolvido em PHP puro (sem frameworks), MySQL com PDO e Bootstrap 5. Permite registrar ocorrências, acompanhar o andamento e atualizar o status de cada atendimento, simulando o fluxo real de um service desk.
 
 ![PHP](https://img.shields.io/badge/PHP-8.x-777BB4?logo=php&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-8.x-4479A1?logo=mysql&logoColor=white)
@@ -9,110 +9,85 @@ Sistema web de **gerenciamento de chamados de suporte de TI**, desenvolvido em *
 
 ---
 
-## 🎯 Propósito
+## Sobre o Projeto
 
-Equipes de suporte precisam de visibilidade sobre o que está aberto, em andamento e resolvido. Este projeto entrega um painel simples e objetivo para:
+Equipes de suporte necessitam de visibilidade sobre o andamento das solicitações técnicas. Este projeto entrega uma solução prática para:
 
-- Abrir novos chamados com título e descrição do problema;
-- Visualizar todos os chamados em um painel com indicadores por status;
-- Alterar o status do atendimento (**Aberto → Em Andamento → Resolvido**).
+- Abertura de novos chamados com título e descrição do problema;
+- Visualização de todas as solicitações em um painel com indicadores por status;
+- Atualização do status do atendimento (Aberto → Em Andamento → Resolvido).
 
-O foco do projeto é demonstrar **boas práticas de back-end com PHP puro**: acesso a dados seguro, validação, separação de responsabilidades e interface responsiva.
+O foco da aplicação é demonstrar os fundamentos práticos do desenvolvimento back-end com PHP puro: acesso seguro a banco de dados com PDO, validações de rotas e interface responsiva.
 
-## 🧰 Tecnologias
+## Funcionalidades
 
-| Tecnologia | Uso |
+- Cadastro de solicitações de suporte
+- Painel de acompanhamento de chamados
+- Alteração de status dos atendimentos (Aberto, Em Andamento, Resolvido)
+- Interface responsiva com Bootstrap 5
+
+## Tecnologias Utilizadas
+
+| Tecnologia | Finalidade |
 |---|---|
-| **PHP 8+** | Lógica de negócio e renderização das páginas |
-| **PDO** | Acesso ao banco com *prepared statements* |
-| **MySQL / MariaDB** | Persistência dos chamados |
-| **Bootstrap 5** | Interface responsiva (via CDN) |
-| **Git / GitHub** | Versionamento e publicação |
+| **PHP 8+** | Lógica de negócio, validações e renderização |
+| **MySQL + PDO** | Persistência dos dados com Prepared Statements |
+| **HTML5 / CSS3** | Estruturação e estilização de telas |
+| **Bootstrap 5** | Design responsivo e componentes visuais |
+| **Git / GitHub** | Versionamento de código |
 
-## 🔐 Segurança aplicada
+## Segurança Aplicada
 
-- **SQL Injection:** todas as consultas com entrada do usuário usam *prepared statements* do PDO (`ATTR_EMULATE_PREPARES = false`).
-- **XSS:** toda saída dinâmica é escapada com `htmlspecialchars`.
-- **CSRF:** formulários protegidos por token de sessão validado com `hash_equals`.
-- **Validação server-side:** ID validado como inteiro e status validado por *whitelist*.
-- **Tratamento de erros:** exceções do PDO são registradas em log, sem expor detalhes ao usuário.
+- **SQL Injection:** Todas as consultas que utilizam dados do usuário utilizam Prepared Statements com PDO.
+- **XSS:** Saída de dados dinâmicos tratada com `htmlspecialchars`.
+- **Validação Server-side:** Validação de tipos de dados nos formulários e restrição de status permitidos.
+- **Proteção de Rotas:** Controle de acesso através de sessões do PHP no arquivo de autenticação.
 
-## 🏗️ Arquitetura
+## Estrutura de Pastas
 
-```
-helpdesk-chamados/
+```text
+sistema-chamados/
 ├── config/
-│   └── conexao.php          # Conexão PDO (try/catch, modo de exceções)
-├── database.sql             # Criação do banco db_chamados e da tabela chamados
-├── index.php                # Painel: lista, badges de status e alteração de status
+│   └── conexao.php          # Conexão PDO com o banco de dados
+├── database.sql             # Script de criação do banco e tabelas
+├── index.php                # Painel principal: listagem e alteração de status
 ├── novo-chamado.php         # Formulário de abertura de chamado
-├── salvar-chamado.php       # Recebe o POST e insere o chamado com PDO
-├── atualizar-status.php     # Atualiza o status de um chamado pelo ID
+├── salvar-chamado.php       # Processamento do formulário e inserção via PDO
+├── atualizar-status.php     # Atualização do status do chamado
 └── README.md
 ```
 
-### Fluxo da aplicação
-
-```
-[novo-chamado.php] --POST--> [salvar-chamado.php] --INSERT--> [MySQL]
-                                      |
-                                      v
-                               [index.php] <--SELECT-- [MySQL]
-                                      |
-                                      +--POST--> [atualizar-status.php] --UPDATE--> [MySQL]
-```
-
-### Telas (descrição)
-
-- **Painel (`index.php`):** cards de resumo por status, tabela responsiva com badges coloridos (🔴 Aberto, 🟡 Em Andamento, 🟢 Resolvido) e menu "Alterar status" em cada linha.
-- **Novo chamado (`novo-chamado.php`):** formulário centralizado com campos de título e descrição, validação e mensagens de erro.
-
-> 💡 Dica: adicione prints reais na pasta `docs/` e referencie-os aqui, por exemplo: `![Painel](docs/painel.png)`.
-
-## ⚙️ Como executar localmente
+## Como Executar Localmente
 
 ### Pré-requisitos
-- PHP 8.0 ou superior
+- PHP 8.0+
 - MySQL ou MariaDB
-- XAMPP, WAMP, Laragon (ou PHP + MySQL instalados)
+- Servidor local (XAMPP, WAMP ou Laragon)
 
-### Passo a passo
+### Passo a Passo
 
-1. **Clone o repositório**
+1. **Clone o repositório** na pasta pública do seu servidor local (`htdocs` no XAMPP):
    ```bash
-   git clone https://github.com/cauancarvalh0/helpdesk-chamados.git
+   git clone https://github.com/cauancarvalh0/sistema-chamados.git
    ```
-2. **Mova o projeto** para a pasta pública do servidor (`htdocs` no XAMPP ou `www` no Laragon).
-3. **Crie o banco de dados** importando o script:
-   - Pelo phpMyAdmin (aba *Importar* → `database.sql`), ou
-   - Pelo terminal:
-     ```bash
-     mysql -u root -p < database.sql
-     ```
-4. **Configure a conexão** em `config/conexao.php` (host, usuário e senha do seu MySQL).
-5. **Acesse no navegador:**
+2. **Crie o banco de dados** importando o arquivo `database.sql` pelo phpMyAdmin.
+3. **Configure a conexão** no arquivo `config/conexao.php` ajustando o host, usuário e senha do seu MySQL local (usuário `root` e senha vazia por padrão).
+4. **Acesse no navegador:**
    ```
-   http://localhost/helpdesk-chamados/
+   http://localhost/sistema-chamados/
    ```
 
-## 🚀 Melhorias futuras
+## Melhorias Futuras
 
 - Autenticação de usuários (técnico e solicitante)
 - Níveis de prioridade e categorias
 - Filtros, busca e paginação
-- Edição e exclusão de chamados
 - Histórico de alterações de status
 
-## 👨‍💻 Autor
+## Autor
 
-**Cauan Felipe Carvalho da Silva** — Desenvolvedor Web
+**Cauan Felipe Carvalho da Silva** — Desenvolvedor Web Júnior
 
-- 🌐 Portfólio: [cauancarvalho.netlify.app](https://cauancarvalho.netlify.app)
-- 🐙 GitHub: [github.com/cauancarvalh0](https://github.com/cauancarvalh0)
-- 💼 LinkedIn: [linkedin.com/in/cauancarvalho0](https://www.linkedin.com/in/cauancarvalho0)
-- 📧 E-mail: [cauancarvalho004@gmail.com](mailto:cauancarvalho004@gmail.com)
-- 📸 Instagram: [@dev_cauan](https://instagram.com/dev_cauan)
-
----
-
-⭐ Se este projeto foi útil, deixe uma estrela no repositório!
+- GitHub: https://github.com/cauancarvalh0
+- LinkedIn: https://www.linkedin.com/in/cauancarvalh0
+- E-mail: cauancarvalho004@gmail.com
